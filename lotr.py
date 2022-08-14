@@ -16,9 +16,8 @@ def get_races_pie(data):
     plt.show()
 
 
-# Делаем датафрейм, ставим индекс по расе, засовываем имена хоббитов в список.
-def get_hobbit_families_bars(data):
-    df = pd.DataFrame(data)
+# Ставим индекс по расе, засовываем имена хоббитов в список.
+def get_hobbit_families_bars(df):
     df = df.set_index(['Race'])
     names = df.loc['Hobbit']['Name'].to_numpy()
     # Тут фильтруем, убираем фамилии в скобочках.
@@ -43,7 +42,19 @@ def get_hobbit_families_bars(data):
     plt.show()
 
 
+# Делаем индексацию по расе, создаем датафрейм чисто с Эльфами
+# сейвим в csv с отсутствием индексов (чтобы не было везде Elf)
+def get_new_csv(df):
+    df = df.set_index(['Race'])
+    elves = df.loc['Elf']
+    elves_df = pd.DataFrame(elves)
+    elves_df.to_csv('elves.csv', index=False)
+
+
+
 link = 'https://raw.githubusercontent.com/MokoSan/FSharpAdvent/master/Data/Characters.csv'
 data = pd.read_csv(link)
+dataframe = pd.DataFrame(data)
 get_races_pie(data)
-get_hobbit_families_bars(data)
+get_hobbit_families_bars(dataframe)
+get_new_csv(dataframe)
